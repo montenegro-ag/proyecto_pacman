@@ -121,7 +121,18 @@ def move():
                 vector(0, 5),
                 vector(0, -5),
             ]
-            plan = choice(options)
+            # Filtra solo las opciones validas dentro del laberinto
+            valid_options = [opt for opt in options if valid(point + opt)]
+
+            if valid_options:
+                # Elige la opcion que acerque mas al fantasma hacia pacman
+                plan = min(
+                    valid_options,
+                    key=lambda opt: abs((point + opt) - pacman)
+                )
+            else:
+                plan = choice(options)
+
             course.x = plan.x
             course.y = plan.y
 
