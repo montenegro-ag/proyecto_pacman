@@ -99,29 +99,25 @@ def move():
     dot(20, 'yellow')
 
     for point, course in ghosts:
-        if valid(point + course):
-            point.move(course)
-        else:
-            options = [
-                vector(10, 0),
-                vector(-10, 0),
-                vector(0, 10),
-                vector(0, -10),
-            ]
-            # Filtra solo las opciones validas dentro del laberinto
-            valid_options = [opt for opt in options if valid(point + opt)]
+        options = [
+            vector(10, 0),
+            vector(-10, 0),
+            vector(0, 10),
+            vector(0, -10),
+        ]
+        # Filtra solo las opciones validas dentro del laberinto
+        valid_options = [opt for opt in options if valid(point + opt)]
 
-            if valid_options:
-                # Elige la opcion que acerque mas al fantasma hacia pacman
-                plan = min(
-                    valid_options,
-                    key=lambda opt: abs((point + opt) - pacman)
-                )
-            else:
-                plan = choice(options)
-
+        if valid_options:
+            # En cada paso, elige la opcion que acerque mas al fantasma hacia pacman
+            plan = min(
+                valid_options,
+                key=lambda opt: abs((point + opt) - pacman)
+            )
             course.x = plan.x
             course.y = plan.y
+
+        point.move(course)
 
         up()
         goto(point.x + 10, point.y + 10)
